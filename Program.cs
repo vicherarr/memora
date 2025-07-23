@@ -19,7 +19,7 @@ builder.Services.AddControllers();
 
 // Add Entity Framework DbContext
 builder.Services.AddDbContext<MemoraDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add MediatR
 builder.Services.AddMediatR(cfg => {

@@ -25,7 +25,7 @@ public class MemoraDbContext : DbContext
             entity.HasIndex(e => e.CorreoElectronico).IsUnique();
             
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
-            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("GETUTCDATE()");
+            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("DATETIME('now')");
         });
 
         // Nota entity configuration
@@ -36,8 +36,8 @@ public class MemoraDbContext : DbContext
             entity.HasIndex(e => e.FechaCreacion);
             
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
-            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("GETUTCDATE()");
-            entity.Property(e => e.FechaModificacion).HasDefaultValueSql("GETUTCDATE()");
+            entity.Property(e => e.FechaCreacion).HasDefaultValueSql("DATETIME('now')");
+            entity.Property(e => e.FechaModificacion).HasDefaultValueSql("DATETIME('now')");
 
             entity.HasOne(e => e.Usuario)
                 .WithMany(u => u.Notas)
@@ -52,7 +52,7 @@ public class MemoraDbContext : DbContext
             entity.HasIndex(e => e.NotaId);
             
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
-            entity.Property(e => e.FechaSubida).HasDefaultValueSql("GETUTCDATE()");
+            entity.Property(e => e.FechaSubida).HasDefaultValueSql("DATETIME('now')");
 
             entity.HasOne(e => e.Nota)
                 .WithMany(n => n.ArchivosAdjuntos)

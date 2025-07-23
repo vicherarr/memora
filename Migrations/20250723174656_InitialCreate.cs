@@ -15,11 +15,11 @@ namespace Memora.Migrations
                 name: "Usuarios",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    NombreUsuario = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    CorreoElectronico = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    ContrasenaHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()")
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    NombreUsuario = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    CorreoElectronico = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
+                    ContrasenaHash = table.Column<string>(type: "TEXT", nullable: false),
+                    FechaCreacion = table.Column<DateTime>(type: "TEXT", nullable: false, defaultValueSql: "DATETIME('now')")
                 },
                 constraints: table =>
                 {
@@ -30,12 +30,12 @@ namespace Memora.Migrations
                 name: "Notas",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Titulo = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    Contenido = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
-                    FechaModificacion = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
-                    UsuarioId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Titulo = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true),
+                    Contenido = table.Column<string>(type: "TEXT", nullable: false),
+                    FechaCreacion = table.Column<DateTime>(type: "TEXT", nullable: false, defaultValueSql: "DATETIME('now')"),
+                    FechaModificacion = table.Column<DateTime>(type: "TEXT", nullable: false, defaultValueSql: "DATETIME('now')"),
+                    UsuarioId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -52,14 +52,14 @@ namespace Memora.Migrations
                 name: "ArchivosAdjuntos",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DatosArchivo = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    NombreOriginal = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    TipoArchivo = table.Column<int>(type: "int", nullable: false),
-                    TipoMime = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    TamanoBytes = table.Column<long>(type: "bigint", nullable: false),
-                    FechaSubida = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
-                    NotaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    DatosArchivo = table.Column<byte[]>(type: "BLOB", nullable: false),
+                    NombreOriginal = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
+                    TipoArchivo = table.Column<int>(type: "INTEGER", nullable: false),
+                    TipoMime = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    TamanoBytes = table.Column<long>(type: "INTEGER", nullable: false),
+                    FechaSubida = table.Column<DateTime>(type: "TEXT", nullable: false, defaultValueSql: "DATETIME('now')"),
+                    NotaId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {

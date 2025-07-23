@@ -20,12 +20,16 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, U
 
     public async Task<UsuarioDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
-        // Check if user already exists
-        var existingUser = await _context.Usuarios
-            .FirstOrDefaultAsync(u => u.CorreoElectronico == request.CorreoElectronico || 
-                                     u.NombreUsuario == request.NombreUsuario, 
-                                cancellationToken);
+        try
+        {
 
+            // Check if user already exists
+            var existingUser = await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.CorreoElectronico == request.CorreoElectronico ||
+                                         u.NombreUsuario == request.NombreUsuario,
+                                    cancellationToken);
+
+        
         if (existingUser != null)
         {
             throw new ArgumentException("User with this email or username already exists");
@@ -51,5 +55,10 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, U
             CorreoElectronico = usuario.CorreoElectronico,
             FechaCreacion = usuario.FechaCreacion
         };
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
     }
 }
