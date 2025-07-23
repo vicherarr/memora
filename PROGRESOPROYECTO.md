@@ -1,6 +1,6 @@
 # Progreso del Proyecto Memora API
 
-## Estado Actual: Fase 2 Completada ✅
+## Estado Actual: Fase 3 Completada ✅
 
 ---
 
@@ -95,12 +95,59 @@
 
 ---
 
-## Próximas Fases Pendientes:
-
-### Fase 3: Authentication System with MediatR 🔄 SIGUIENTE
+## Fase 3: Authentication System with MediatR ✅ COMPLETADA
 **Objetivo**: Implement user registration and login functionality
 
-### Fase 4: Notes Management Features 📋 PENDIENTE
+### ✅ Tareas Completadas:
+
+#### 1. **Application Layer Structure**
+- ✅ Created complete Application folder structure with Common, Features, Commands, Queries
+- ✅ Set up proper separation between DTOs, Commands, Handlers, and Validators
+
+#### 2. **Authentication DTOs**
+- ✅ UsuarioDto: User data transfer object
+- ✅ LoginResponseDto: Login response with token and user info
+- ✅ RegisterUserDto: User registration request
+- ✅ LoginUserDto: User login request
+
+#### 3. **MediatR Commands and Handlers**
+- ✅ RegisterUserCommand and RegisterUserCommandHandler
+- ✅ LoginUserCommand and LoginUserCommandHandler
+- ✅ Proper error handling and business logic implementation
+- ✅ User existence validation and password verification
+
+#### 4. **FluentValidation Validators**
+- ✅ RegisterUserCommandValidator with comprehensive validation rules
+- ✅ LoginUserCommandValidator with email and password validation
+- ✅ Password strength requirements (8+ chars, uppercase, lowercase, digit)
+- ✅ Username pattern validation (alphanumeric, dots, dashes, underscores)
+
+#### 5. **Infrastructure Services**
+- ✅ IJwtTokenService and JwtTokenService implementation
+- ✅ IPasswordHashService and PasswordHashService with BCrypt
+- ✅ JWT token generation with claims (UserId, Username, Email)
+- ✅ Secure password hashing with salt
+
+#### 6. **API Controller**
+- ✅ AutenticacionController with register and login endpoints
+- ✅ Proper error handling with appropriate HTTP status codes
+- ✅ Request/response DTOs mapping via MediatR
+
+#### 7. **Configuration and Services**
+- ✅ Updated Program.cs with MediatR, FluentValidation, and custom services
+- ✅ JWT settings configuration in appsettings.Development.json
+- ✅ Dependency injection setup for all services
+
+#### 8. **Build and Testing**
+- ✅ Application compiles successfully with 0 errors
+- ✅ Docker build and container run successful
+- ✅ Authentication endpoints ready for testing
+
+---
+
+## Próximas Fases Pendientes:
+
+### Fase 4: Notes Management Features 🔄 SIGUIENTE
 **Objetivo**: Complete CRUD operations for notes using MediatR
 
 ### Fase 5: File Attachment Management 📋 PENDIENTE
@@ -121,11 +168,12 @@
 ---
 
 ## Resumen de Estado:
-- **Completadas**: 2/9 fases (22%)
+- **Completadas**: 3/9 fases (33%)
 - **En progreso**: 0/9 fases
-- **Pendientes**: 7/9 fases
+- **Pendientes**: 6/9 fases
 - **Compilación**: ✅ Exitosa
 - **Docker Build**: ✅ Exitosa
+- **Authentication**: ✅ Implementada (JWT + BCrypt)
 - **Tests**: ⏳ Pendiente (Fase 8)
 - **Despliegue**: ⏳ Pendiente (Fase 9)
 

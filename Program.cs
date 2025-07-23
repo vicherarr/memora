@@ -8,6 +8,9 @@ using AutoMapper;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.Data;
+using Application.Common.Interfaces;
+using Infrastructure.Services;
+using Application.Features.Authentication.Commands;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,15 +23,19 @@ builder.Services.AddDbContext<MemoraDbContext>(options =>
 
 // Add MediatR
 builder.Services.AddMediatR(cfg => {
-    cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(RegisterUserCommand).Assembly);
 });
 
 // Add AutoMapper
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddAutoMapper(typeof(RegisterUserCommand).Assembly);
 
 // Add FluentValidation
 builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+builder.Services.AddValidatorsFromAssembly(typeof(RegisterUserCommand).Assembly);
+
+// Add Application Services
+builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+builder.Services.AddScoped<IPasswordHashService, PasswordHashService>();
 
 // JWT Authentication Configuration
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
