@@ -1,6 +1,6 @@
 # Progreso del Proyecto Memora API
 
-## Estado Actual: Fase 1 Completada ✅
+## Estado Actual: Fase 2 Completada ✅
 
 ---
 
@@ -64,29 +64,40 @@
 
 ---
 
-## Próximas Fases Pendientes:
-
-### Fase 2: Domain Models & Database Setup 🔄 SIGUIENTE
+## Fase 2: Domain Models & Database Setup ✅ COMPLETADA
 **Objetivo**: Create domain entities and database context
 
-**Tareas Pendientes**:
-1. **Domain Entities** (`/Domain/Entities/`)
-   - Usuario.cs: User entity with properties and relationships
-   - Nota.cs: Note entity with validation attributes
-   - ArchivoAdjunto.cs: File attachment entity with binary data
-   - TipoDeArchivo.cs: File type enumeration
+### ✅ Tareas Completadas:
 
-2. **Database Context** (`/Infrastructure/Data/`)
-   - MemoraDbContext.cs: EF Core context with DbSets
-   - Entity configurations for relationships and constraints
-   - Database seeding configuration
+#### 1. **Domain Entities** (`/Domain/Entities/`)
+- ✅ Usuario.cs: User entity with properties and relationships
+- ✅ Nota.cs: Note entity with validation attributes  
+- ✅ ArchivoAdjunto.cs: File attachment entity with binary data
+- ✅ TipoDeArchivo.cs: File type enumeration (enum)
 
-3. **Database Migration**
-   - Create initial migration with all entities
-   - Configure indexes for performance (UserId, NotaId, etc.)
-   - Set up proper foreign key constraints
+#### 2. **Database Context** (`/Infrastructure/Data/`)
+- ✅ MemoraDbContext.cs: EF Core context with DbSets
+- ✅ Entity configurations for relationships and constraints
+- ✅ Database indexes and foreign key constraints
+- ✅ Configured cascade delete behavior
 
-### Fase 3: Authentication System with MediatR 📋 PENDIENTE
+#### 3. **Database Migration**
+- ✅ Created initial migration with all entities
+- ✅ Configured indexes for performance (UserId, NotaId, etc.)
+- ✅ Set up proper foreign key constraints
+- ✅ Added connection string configuration
+
+#### 4. **Entity Framework Setup**
+- ✅ Installed EF Core packages (9.0.7)
+- ✅ Configured DbContext in Program.cs
+- ✅ Set up SQL Server provider
+- ✅ Installed EF Core tools globally
+
+---
+
+## Próximas Fases Pendientes:
+
+### Fase 3: Authentication System with MediatR 🔄 SIGUIENTE
 **Objetivo**: Implement user registration and login functionality
 
 ### Fase 4: Notes Management Features 📋 PENDIENTE
@@ -110,10 +121,11 @@
 ---
 
 ## Resumen de Estado:
-- **Completadas**: 1/9 fases (11%)
+- **Completadas**: 2/9 fases (22%)
 - **En progreso**: 0/9 fases
-- **Pendientes**: 8/9 fases
+- **Pendientes**: 7/9 fases
 - **Compilación**: ✅ Exitosa
+- **Docker Build**: ✅ Exitosa
 - **Tests**: ⏳ Pendiente (Fase 8)
 - **Despliegue**: ⏳ Pendiente (Fase 9)
 

@@ -6,11 +6,17 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using AutoMapper;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
+using Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+
+// Add Entity Framework DbContext
+builder.Services.AddDbContext<MemoraDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add MediatR
 builder.Services.AddMediatR(cfg => {

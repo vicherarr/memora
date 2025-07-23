@@ -399,3 +399,9 @@ DeleteArchivoCommand: { ArchivoId, UsuarioId }
 - Use CQRS pattern with MediatR for clean separation of concerns
 - Implement repository pattern for data access abstraction
 - Follow clean architecture principles with proper dependency injection
+
+## Git Commit Instructions
+
+- When committing changes, always use "Víctor León Herrera Arribas <vicherarr@gmail.com>" as co-author
+- Update PROGRESOPROYECTO.md after completing each phase to track progress
+- Follow conventional commit format: feat/fix/docs/refactor etc.
