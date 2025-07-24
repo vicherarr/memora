@@ -64,4 +64,46 @@ public class AutenticacionController : ControllerBase
             return StatusCode(500, new { message = "An internal server error occurred" });
         }
     }
+
+    /// <summary>
+    /// Endpoint de autenticación simplificado para Swagger UI
+    /// </summary>
+    /// <remarks>
+    /// **ÚSALO PARA AUTENTICARTE EN SWAGGER:**
+    /// 
+    /// 1. Introduce tu email y contraseña
+    /// 2. Ejecuta este endpoint
+    /// 3. Copia el token de la respuesta
+    /// 4. Haz clic en "Authorize" arriba
+    /// 5. Pega el token (sin 'Bearer ') y autoriza
+    /// 
+    /// **Usuarios de prueba:**
+    /// - Email: test@test.com / Contraseña: Test123456
+    /// - Email: dockertest@test.com / Contraseña: Test123456
+    /// </remarks>
+    /// <param name="request">Credenciales de usuario</param>
+    /// <returns>Token JWT para usar en Authorization</returns>
+    [HttpPost("swagger-auth")]
+    public async Task<ActionResult<SwaggerTokenResponseDto>> SwaggerAuth(SwaggerAuthDto request)
+    {
+        try
+        {
+            var command = new LoginUserCommand
+            {
+                CorreoElectronico = request.CorreoElectronico,
+                Contrasena = request.Contrasena
+            };
+
+            var result = await _mediator.Send(command);
+            return Ok(new SwaggerTokenResponseDto { Token = result.Token });
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            return Unauthorized(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "An internal server error occurred" });
+        }
+    }
 }

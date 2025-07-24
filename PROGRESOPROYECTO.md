@@ -151,6 +151,15 @@
 - ✅ **Docker deployment fully functional with SQLite database**
 - ✅ **Authentication endpoints tested and working in Docker container**
 
+#### 9. **Swagger UI Enhancements** 🆕
+- ✅ **Swagger enabled in Production mode for Docker containers**
+- ✅ **Created simplified authentication endpoint `/api/autenticacion/swagger-auth`**
+- ✅ **Enhanced JWT authorization flow with detailed instructions**
+- ✅ **Improved Swagger documentation with step-by-step authentication guide**
+- ✅ **Added XML documentation generation for better API documentation**
+- ✅ **Configured Swagger UI with Bearer token authentication scheme**
+- ✅ **Streamlined authentication process for testing via Swagger UI**
+
 ---
 
 ## Próximas Fases Pendientes:

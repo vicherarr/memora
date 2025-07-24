@@ -69,14 +69,31 @@ builder.Services.AddSwaggerGen(options =>
         Description = "API RESTful para la aplicación móvil Memora - Sistema de gestión de notas con archivos multimedia"
     });
 
-    // Configure JWT authentication for Swagger
+    // Include XML comments for better documentation
+    var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    if (File.Exists(xmlPath))
+    {
+        options.IncludeXmlComments(xmlPath);
+    }
+
+    // Configure JWT authentication for Swagger with improved UX
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "JWT Authorization header using the Bearer scheme. Enter 'Bearer' [space] and then your token in the text input below.",
         Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer"
+        Description = @"JWT Authorization header using the Bearer scheme. 
+                        
+**PASOS PARA AUTENTICARSE:**
+1. Ejecuta el endpoint POST /api/autenticacion/swagger-auth con email y contraseña
+2. Copia el token de la respuesta
+3. Haz clic en 'Authorize' arriba
+4. Pega el token (sin 'Bearer ') y haz clic en 'Authorize'
+
+**Ejemplo:** Si el token es 'abc123', introduce solo: abc123"
     });
 
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -98,11 +115,12 @@ builder.Services.AddSwaggerGen(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Memora API v1");
+    c.RoutePrefix = "swagger"; // Set Swagger UI at /swagger
+});
 
 app.UseHttpsRedirection();
 
