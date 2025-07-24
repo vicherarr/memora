@@ -11,6 +11,7 @@ using Infrastructure.Data;
 using Application.Common.Interfaces;
 using Infrastructure.Services;
 using Application.Features.Authentication.Commands;
+using Application.Common.Behaviours;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,9 +23,10 @@ builder.Services.AddDbContext<MemoraDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add MediatR
-builder.Services.AddMediatR(cfg => {
-    cfg.RegisterServicesFromAssembly(typeof(RegisterUserCommand).Assembly);
-});
+builder.Services.AddMediatR(typeof(RegisterUserCommand).Assembly);
+
+// Add MediatR Pipeline Behaviors
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(Application.Common.Behaviours.ValidationBehaviour<,>));
 
 // Add AutoMapper
 builder.Services.AddAutoMapper(typeof(RegisterUserCommand).Assembly);

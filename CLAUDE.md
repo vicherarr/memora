@@ -405,3 +405,4 @@ DeleteArchivoCommand: { ArchivoId, UsuarioId }
 - When committing changes, always use "Víctor León Herrera Arribas <vicherarr@gmail.com>" as co-author
 - Update PROGRESOPROYECTO.md after completing each phase to track progress
 - Follow conventional commit format: feat/fix/docs/refactor etc.
+- **NEVER include "Generated with Claude Code" or any Claude-related text in commit messages**

@@ -6,7 +6,9 @@
       "Bash(git add:*)",
       "Bash(dotnet ef migrations:*)",
       "Bash(dotnet ef database:*)",
-      "Bash(dotnet build)"
+      "Bash(dotnet build)",
+      "Bash(docker build:*)",
+      "Bash(docker run:*)"
     ],
     "deny": []
   }

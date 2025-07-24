@@ -1,6 +1,6 @@
 # Progreso del Proyecto Memora API
 
-## Estado Actual: Fase 3 Completada ✅
+## Estado Actual: Fase 4 Completada ✅
 
 ---
 
@@ -12,12 +12,12 @@
 #### 1. **Package Installation & Configuration**
 - ✅ Microsoft.EntityFrameworkCore.SqlServer (9.0.7)
 - ✅ Microsoft.EntityFrameworkCore.Tools (9.0.7)
-- ✅ MediatR (13.0.0)
+- ✅ MediatR (11.1.0) - **FIXED: Compatibility issues resolved**
 - ✅ MediatR.Extensions.Microsoft.DependencyInjection (11.1.0)
 - ✅ Microsoft.AspNetCore.Authentication.JwtBearer (8.0.11)
-- ✅ FluentValidation (12.0.0)
+- ✅ FluentValidation (11.11.0) - **FIXED: Compatibility issues resolved**
 - ✅ FluentValidation.AspNetCore (11.3.1)
-- ✅ AutoMapper (15.0.1)
+- ✅ AutoMapper (12.0.1) - **FIXED: Compatibility issues resolved**
 - ✅ AutoMapper.Extensions.Microsoft.DependencyInjection (12.0.1)
 - ✅ BCrypt.Net-Next (4.0.3)
 
@@ -162,10 +162,58 @@
 
 ---
 
-## Próximas Fases Pendientes:
-
-### Fase 4: Notes Management Features 🔄 SIGUIENTE
+## Fase 4: Notes Management Features ✅ COMPLETADA
 **Objetivo**: Complete CRUD operations for notes using MediatR
+
+### ✅ Tareas Completadas:
+
+#### 1. **Application Layer** (`/Application/Features/Notas/`)
+- ✅ GetUserNotasQuery and GetUserNotasQueryHandler: Paginated user notes retrieval
+- ✅ GetNotaByIdQuery and GetNotaByIdQueryHandler: Specific note retrieval with attachments count
+- ✅ CreateNotaCommand and CreateNotaCommandHandler: New note creation
+- ✅ UpdateNotaCommand and UpdateNotaCommandHandler: Note modification
+- ✅ DeleteNotaCommand and DeleteNotaCommandHandler: Note deletion with cascading attachment removal
+- ✅ All handlers include proper authorization logic (users can only access their own notes)
+
+#### 2. **DTOs and Validation**
+- ✅ NotaDto: Basic note data transfer object
+- ✅ NotaDetailDto: Detailed note view with attachments count
+- ✅ CreateNotaDto and UpdateNotaDto: Request DTOs for note operations
+- ✅ PaginatedNotasDto: Paginated response with metadata (TotalCount, PageNumber, etc.)
+- ✅ CreateNotaCommandValidator and UpdateNotaCommandValidator: Input validation
+- ✅ GetUserNotasQueryValidator and GetNotaByIdQueryValidator: Query parameter validation
+
+#### 3. **API Controller** (`/API/Controllers/`)
+- ✅ NotasController with complete CRUD operations
+- ✅ GET /api/notas: Paginated user notes (default 10 per page, max 100)
+- ✅ GET /api/notas/{id}: Specific note with attachments count
+- ✅ POST /api/notas: Create new note
+- ✅ PUT /api/notas/{id}: Update existing note
+- ✅ DELETE /api/notas/{id}: Delete note and related attachments
+- ✅ JWT authorization required for all endpoints
+- ✅ Proper HTTP status codes and error responses
+
+#### 4. **Authorization and Security**
+- ✅ Resource-based authorization: Users can only access their own notes
+- ✅ GetCurrentUserId() helper method for extracting user ID from JWT claims
+- ✅ Proper validation of user ownership in all operations
+- ✅ Security against unauthorized access attempts
+
+#### 5. **Database Integration**
+- ✅ Entity Framework integration with proper Include() statements
+- ✅ Pagination implemented with Skip() and Take()
+- ✅ Cascading delete behavior for related attachments
+- ✅ Efficient queries with minimal database roundtrips
+
+#### 6. **Build and Compilation**
+- ✅ All code compiles successfully with 0 errors
+- ✅ Only XML documentation warnings (non-breaking)
+- ✅ **FIXED: Package compatibility issues resolved**
+- ✅ **FIXED: MediatR configuration updated for version 11.1.0**
+
+---
+
+## Próximas Fases Pendientes:
 
 ### Fase 5: File Attachment Management 📋 PENDIENTE
 **Objetivo**: Handle file uploads and downloads with database storage
@@ -185,12 +233,13 @@
 ---
 
 ## Resumen de Estado:
-- **Completadas**: 3/9 fases (33%)
+- **Completadas**: 4/9 fases (44%)
 - **En progreso**: 0/9 fases
-- **Pendientes**: 6/9 fases
-- **Compilación**: ✅ Exitosa
+- **Pendientes**: 5/9 fases
+- **Compilación**: ✅ Exitosa (Errores de compatibilidad corregidos)
 - **Docker Build**: ✅ Exitosa
 - **Authentication**: ✅ Implementada (JWT + BCrypt)
+- **Notes CRUD**: ✅ Implementada (MediatR + EF Core)
 - **Tests**: ⏳ Pendiente (Fase 8)
 - **Despliegue**: ⏳ Pendiente (Fase 9)
 
