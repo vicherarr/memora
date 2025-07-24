@@ -27,4 +27,11 @@ RUN dotnet publish "./Memora.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY memora.db /app/memora.db
+
+# Fix permissions for SQLite database
+USER root
+RUN chmod 666 /app/memora.db && chown $APP_UID:$APP_UID /app/memora.db
+USER $APP_UID
+
 ENTRYPOINT ["dotnet", "Memora.dll"]

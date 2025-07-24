@@ -17,7 +17,7 @@ public class AutenticacionController : ControllerBase
     }
 
     [HttpPost("registrar")]
-    public async Task<ActionResult<UsuarioDto>> Register(RegisterUserDto request)
+    public async Task<ActionResult<RegisterResponseDto>> Register(RegisterUserDto request)
     {
         try
         {
