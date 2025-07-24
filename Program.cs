@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Security.Claims;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using AutoMapper;
@@ -26,7 +27,7 @@ builder.Services.AddDbContext<MemoraDbContext>(options =>
 builder.Services.AddMediatR(typeof(RegisterUserCommand).Assembly);
 
 // Add MediatR Pipeline Behaviors
-builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(Application.Common.Behaviours.ValidationBehaviour<,>));
+// builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(Application.Common.Behaviours.ValidationBehaviour<,>));
 
 // Add AutoMapper
 builder.Services.AddAutoMapper(typeof(RegisterUserCommand).Assembly);
@@ -56,7 +57,9 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(key),
         ValidateIssuer = false,
         ValidateAudience = false,
-        ClockSkew = TimeSpan.Zero
+        ClockSkew = TimeSpan.Zero,
+        NameClaimType = ClaimTypes.NameIdentifier,
+        RoleClaimType = ClaimTypes.Role
     };
 });
 

@@ -5,6 +5,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Text.Json;
+using System.Text;
 
 namespace API.Controllers;
 
@@ -47,7 +49,7 @@ public class NotasController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, new { message = "Error interno del servidor" });
+            return StatusCode(500, new { message = "Error interno del servidor", error = ex.Message, stackTrace = ex.StackTrace });
         }
     }
 
@@ -80,7 +82,7 @@ public class NotasController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, new { message = "Error interno del servidor" });
+            return StatusCode(500, new { message = "Error interno del servidor", error = ex.Message, stackTrace = ex.StackTrace });
         }
     }
 
@@ -108,7 +110,7 @@ public class NotasController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, new { message = "Error interno del servidor" });
+            return StatusCode(500, new { message = "Error interno del servidor", error = ex.Message, stackTrace = ex.StackTrace });
         }
     }
 
@@ -144,7 +146,7 @@ public class NotasController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, new { message = "Error interno del servidor" });
+            return StatusCode(500, new { message = "Error interno del servidor", error = ex.Message, stackTrace = ex.StackTrace });
         }
     }
 
@@ -177,19 +179,58 @@ public class NotasController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, new { message = "Error interno del servidor" });
+            return StatusCode(500, new { message = "Error interno del servidor", error = ex.Message, stackTrace = ex.StackTrace });
         }
     }
 
     private Guid GetCurrentUserId()
     {
-        var userIdClaim = User.FindFirst("nameid")?.Value;
+        // Método 1: Intentar con claims estándar
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value 
+                         ?? User.FindFirst("nameid")?.Value
+                         ?? User.FindFirst("sub")?.Value;
         
-        if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
+        if (!string.IsNullOrEmpty(userIdClaim) && Guid.TryParse(userIdClaim, out var userId))
         {
-            throw new UnauthorizedAccessException("Usuario no autenticado o token inválido");
+            return userId;
         }
         
-        return userId;
+        // Método 2: Parsear JWT directamente del header
+        try
+        {
+            var authHeader = Request.Headers["Authorization"].FirstOrDefault();
+            if (authHeader != null && authHeader.StartsWith("Bearer "))
+            {
+                var token = authHeader["Bearer ".Length..];
+                var parts = token.Split('.');
+                if (parts.Length == 3)
+                {
+                    var payload = parts[1];
+                    // Agregar padding si es necesario
+                    while (payload.Length % 4 != 0)
+                        payload += "=";
+                    
+                    var jsonBytes = Convert.FromBase64String(payload);
+                    var jsonString = Encoding.UTF8.GetString(jsonBytes);
+                    var tokenData = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonString);
+                    
+                    if (tokenData != null && tokenData.TryGetValue("nameid", out var nameId))
+                    {
+                        var userIdString = nameId.ToString();
+                        if (Guid.TryParse(userIdString, out var parsedUserId))
+                        {
+                            return parsedUserId;
+                        }
+                    }
+                }
+            }
+        }
+        catch
+        {
+            // Si falla el parsing directo, continuar con error
+        }
+        
+        var availableClaims = string.Join(", ", User.Claims.Select(c => c.Type));
+        throw new UnauthorizedAccessException($"No se pudo obtener ID de usuario. Claims: {availableClaims}");
     }
 }

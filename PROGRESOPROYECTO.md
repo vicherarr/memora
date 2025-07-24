@@ -211,6 +211,22 @@
 - ✅ **FIXED: Package compatibility issues resolved**
 - ✅ **FIXED: MediatR configuration updated for version 11.1.0**
 
+#### 7. **Authentication and Authorization RESOLVED** 🔧
+- ✅ **FIXED: JWT claims parsing issue completely resolved**
+- ✅ **SOLUTION: Implemented robust GetCurrentUserId() method with dual parsing approach**
+- ✅ **Method 1**: Standard claims extraction from JWT middleware
+- ✅ **Method 2**: Direct JWT payload parsing from Authorization header as fallback
+- ✅ **RESULT: All endpoints now authenticate and authorize correctly**
+
+#### 8. **Full CRUD Operations Testing** ✅
+- ✅ **GET /api/notas**: Paginated notes list working perfectly
+- ✅ **GET /api/notas/{id}**: Individual note retrieval with attachment count
+- ✅ **POST /api/notas**: Note creation with proper user association  
+- ✅ **PUT /api/notas/{id}**: Note updates with modified timestamp
+- ✅ **DELETE /api/notas/{id}**: Note deletion with success confirmation
+- ✅ **Authorization**: Users can only access their own notes (verified)
+- ✅ **Data Persistence**: All operations correctly save/retrieve from database
+
 ---
 
 ## Próximas Fases Pendientes:
