@@ -27,7 +27,7 @@ builder.Services.AddDbContext<MemoraDbContext>(options =>
 builder.Services.AddMediatR(typeof(RegisterUserCommand).Assembly);
 
 // Add MediatR Pipeline Behaviors
-// builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(Application.Common.Behaviours.ValidationBehaviour<,>));
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(Application.Common.Behaviours.ValidationBehaviour<,>));
 
 // Add AutoMapper
 builder.Services.AddAutoMapper(typeof(RegisterUserCommand).Assembly);
@@ -57,9 +57,7 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(key),
         ValidateIssuer = false,
         ValidateAudience = false,
-        ClockSkew = TimeSpan.Zero,
-        NameClaimType = ClaimTypes.NameIdentifier,
-        RoleClaimType = ClaimTypes.Role
+        ClockSkew = TimeSpan.Zero
     };
 });
 

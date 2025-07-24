@@ -185,52 +185,19 @@ public class NotasController : ControllerBase
 
     private Guid GetCurrentUserId()
     {
-        // Método 1: Intentar con claims estándar
-        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value 
-                         ?? User.FindFirst("nameid")?.Value
-                         ?? User.FindFirst("sub")?.Value;
+        // Buscar el user ID en los claims del JWT
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         
-        if (!string.IsNullOrEmpty(userIdClaim) && Guid.TryParse(userIdClaim, out var userId))
+        if (string.IsNullOrEmpty(userIdClaim))
         {
-            return userId;
+            throw new UnauthorizedAccessException("Usuario no autenticado - no se encontró claim de identificación");
         }
         
-        // Método 2: Parsear JWT directamente del header
-        try
+        if (!Guid.TryParse(userIdClaim, out var userId))
         {
-            var authHeader = Request.Headers["Authorization"].FirstOrDefault();
-            if (authHeader != null && authHeader.StartsWith("Bearer "))
-            {
-                var token = authHeader["Bearer ".Length..];
-                var parts = token.Split('.');
-                if (parts.Length == 3)
-                {
-                    var payload = parts[1];
-                    // Agregar padding si es necesario
-                    while (payload.Length % 4 != 0)
-                        payload += "=";
-                    
-                    var jsonBytes = Convert.FromBase64String(payload);
-                    var jsonString = Encoding.UTF8.GetString(jsonBytes);
-                    var tokenData = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonString);
-                    
-                    if (tokenData != null && tokenData.TryGetValue("nameid", out var nameId))
-                    {
-                        var userIdString = nameId.ToString();
-                        if (Guid.TryParse(userIdString, out var parsedUserId))
-                        {
-                            return parsedUserId;
-                        }
-                    }
-                }
-            }
-        }
-        catch
-        {
-            // Si falla el parsing directo, continuar con error
+            throw new UnauthorizedAccessException($"ID de usuario inválido: {userIdClaim}");
         }
         
-        var availableClaims = string.Join(", ", User.Claims.Select(c => c.Type));
-        throw new UnauthorizedAccessException($"No se pudo obtener ID de usuario. Claims: {availableClaims}");
+        return userId;
     }
 }
