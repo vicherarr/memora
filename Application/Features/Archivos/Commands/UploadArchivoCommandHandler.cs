@@ -1,10 +1,13 @@
-using MediatR;
-using Microsoft.EntityFrameworkCore;
+using Application.Common.Interfaces;
 using Application.Features.Archivos.DTOs;
 using Domain.Entities;
 using Domain.Enums;
 using Infrastructure.Data;
-using Application.Common.Interfaces;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using System.IO;
+using System.Net.Sockets;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Application.Features.Archivos.Commands;
 
