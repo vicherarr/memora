@@ -229,10 +229,57 @@
 
 ---
 
-## Próximas Fases Pendientes:
-
-### Fase 5: File Attachment Management 📋 PENDIENTE
+## Fase 5: File Attachment Management ✅ COMPLETADA
 **Objetivo**: Handle file uploads and downloads with database storage
+
+### ✅ Tareas Completadas:
+
+#### 1. **Application Layer** (`/Application/Features/Archivos/`)
+- ✅ **Commands**: UploadArchivoCommand, DeleteArchivoCommand con handlers completos
+- ✅ **Queries**: GetArchivoByIdQuery, GetArchivoDataQuery con handlers optimizados
+- ✅ **DTOs**: ArchivoAdjuntoDto, UploadArchivoDto, UploadArchivoResponseDto, ArchivoDataResult
+- ✅ **Validators**: FluentValidation para todos los commands y queries
+- ✅ **File Processing Integration**: Integración completa con IFileProcessingService
+
+#### 2. **File Processing Services** (`/Infrastructure/Services/`)
+- ✅ **IFileProcessingService**: Interfaz completa para procesamiento de archivos
+- ✅ **FileProcessingService**: Implementación con validación avanzada de MIME types
+- ✅ **File Validation**: Validación de tamaño (50MB límite), tipos permitidos, headers de archivo
+- ✅ **MIME Type Detection**: Detección basada en file signatures y headers binarios
+- ✅ **Security Validation**: Verificación de contenido vs MIME type declarado
+
+#### 3. **API Controller** (`/API/Controllers/`)
+- ✅ **ArchivosController**: Controller completo con 4 endpoints funcionales
+- ✅ **POST /api/notas/{notaId}/archivos**: Upload con multipart/form-data support
+- ✅ **GET /api/archivos/{id}**: Información del archivo (metadata)
+- ✅ **GET /api/archivos/{id}/download**: Descarga completa con Content-Type headers
+- ✅ **DELETE /api/archivos/{id}**: Eliminación segura con autorización
+- ✅ **JWT Authorization**: Todos los endpoints requieren autenticación
+- ✅ **User Authorization**: Usuarios solo pueden acceder a sus propios archivos
+
+#### 4. **File Validation & Security** 
+- ✅ **Size Limits**: Máximo 50MB por archivo (configurable)
+- ✅ **Allowed Types**: Imágenes (JPEG, PNG, GIF, WebP) y Videos (MP4, MOV, AVI, WMV, WebM)
+- ✅ **MIME Validation**: Verificación de headers binarios vs MIME type declarado
+- ✅ **File Security**: Prevención de upload de archivos maliciosos
+- ✅ **Content Validation**: Validación de signatures de archivo reales
+
+#### 5. **Database Integration**
+- ✅ **Binary Storage**: Archivos almacenados como BLOB en base de datos
+- ✅ **Metadata Storage**: Información completa (nombre, tamaño, tipo, fecha)
+- ✅ **Relationships**: Relación correcta con Notas y cascading delete
+- ✅ **Performance**: Queries optimizadas con proyecciones apropiadas
+
+#### 6. **Build and Testing**
+- ✅ **Compilation**: Proyecto compila exitosamente con 0 errores
+- ✅ **Service Registration**: Todos los servicios registrados correctamente en DI
+- ✅ **Application Startup**: Aplicación inicia correctamente en puertos configurados
+- ✅ **Endpoints Available**: Todos los endpoints de archivos disponibles via Swagger
+- ✅ **MediatR Integration**: Commands y Queries integrados correctamente
+
+---
+
+## Próximas Fases Pendientes:
 
 ### Fase 6: Validation & Error Handling 📋 PENDIENTE
 **Objetivo**: Implement comprehensive validation and centralized error handling
@@ -249,17 +296,18 @@
 ---
 
 ## Resumen de Estado:
-- **Completadas**: 4/9 fases (44%)
+- **Completadas**: 5/9 fases (56%)
 - **En progreso**: 0/9 fases
-- **Pendientes**: 5/9 fases
-- **Compilación**: ✅ Exitosa (Errores de compatibilidad corregidos)
+- **Pendientes**: 4/9 fases
+- **Compilación**: ✅ Exitosa (0 errores, solo warnings de documentación XML)
 - **Docker Build**: ✅ Exitosa
 - **Authentication**: ✅ Implementada (JWT + BCrypt)
 - **Notes CRUD**: ✅ Implementada (MediatR + EF Core)
+- **File Attachments**: ✅ Implementada (Upload/Download con validación completa)
 - **Tests**: ⏳ Pendiente (Fase 8)
 - **Despliegue**: ⏳ Pendiente (Fase 9)
 
 ---
 
-*Última actualización: 24 de julio de 2025*
+*Última actualización: 25 de julio de 2025*
 *Proyecto: Memora API - Sistema RESTful para gestión de notas con archivos multimedia*

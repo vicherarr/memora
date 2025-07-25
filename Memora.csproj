@@ -7,7 +7,8 @@
     <UserSecretsId>3d6f68c0-06bf-43b1-b94a-c939b89cfd3e</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- Temporarily disabled to fix Swagger loading issues -->
+    <!-- <GenerateDocumentationFile>true</GenerateDocumentationFile> -->
   </PropertyGroup>
 
   <ItemGroup>

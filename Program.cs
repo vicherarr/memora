@@ -39,6 +39,7 @@ builder.Services.AddValidatorsFromAssembly(typeof(RegisterUserCommand).Assembly)
 // Add Application Services
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IPasswordHashService, PasswordHashService>();
+builder.Services.AddScoped<IFileProcessingService, FileProcessingService>();
 
 // JWT Authentication Configuration
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
@@ -73,12 +74,13 @@ builder.Services.AddSwaggerGen(options =>
     });
 
     // Include XML comments for better documentation
-    var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    if (File.Exists(xmlPath))
-    {
-        options.IncludeXmlComments(xmlPath);
-    }
+    // Temporarily disabled to fix Swagger loading issues
+    // var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    // var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    // if (File.Exists(xmlPath))
+    // {
+    //     options.IncludeXmlComments(xmlPath);
+    // }
 
     // Configure JWT authentication for Swagger with improved UX
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
