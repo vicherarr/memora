@@ -7,15 +7,6 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="IntegrationTests\NotasControllerIntegrationTests.cs" />
-    <Compile Remove="UnitTests\NotasHandlerUnitTests.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="IntegrationTests\NotasControllerIntegrationTests.cs" />
-    <None Include="UnitTests\NotasHandlerUnitTests.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.2" />

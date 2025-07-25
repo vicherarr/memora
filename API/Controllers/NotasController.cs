@@ -175,7 +175,7 @@ public class NotasController : ControllerBase
                 return NotFound(new { message = "Nota no encontrada" });
             }
 
-            return Ok(new { message = "Nota eliminada exitosamente" });
+            return NoContent();
         }
         catch (Exception ex)
         {
