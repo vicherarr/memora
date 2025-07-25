@@ -7,9 +7,18 @@
     <UserSecretsId>3d6f68c0-06bf-43b1-b94a-c939b89cfd3e</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
     <!-- Temporarily disabled to fix Swagger loading issues -->
     <!-- <GenerateDocumentationFile>true</GenerateDocumentationFile> -->
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Memora.Tests/**" />
+    <Content Remove="Memora.Tests/**" />
+    <EmbeddedResource Remove="Memora.Tests/**" />
+    <None Remove="Memora.Tests/**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />

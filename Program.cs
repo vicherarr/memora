@@ -20,8 +20,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // Add Entity Framework DbContext
-builder.Services.AddDbContext<MemoraDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+if (builder.Environment.EnvironmentName == "Testing")
+{
+    var connectionString = "Data Source=TestMemoria.db;Cache=Shared";
+    builder.Services.AddDbContext<MemoraDbContext>(options =>
+        options.UseSqlite(connectionString));
+}
+else
+{
+    builder.Services.AddDbContext<MemoraDbContext>(options =>
+        options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+}
 
 // Add MediatR
 builder.Services.AddMediatR(typeof(RegisterUserCommand).Assembly);
@@ -135,3 +144,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+// Make Program class accessible for integration tests
+public partial class Program { }
