@@ -10,7 +10,9 @@
       "Bash(docker build:*)",
       "Bash(docker run:*)",
       "Bash(dotnet clean:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(dotnet test:*)",
+      "Bash(find:*)"
     ],
     "deny": []
   }

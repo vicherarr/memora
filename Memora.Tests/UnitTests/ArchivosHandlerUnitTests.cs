@@ -35,7 +35,7 @@ public class ArchivosHandlerUnitTests
         var usuario = new Usuario
         {
             Id = usuarioId,
-            NombreUsuario = "testuser",
+            NombreCompleto = "testuser",
             CorreoElectronico = "test@example.com",
             ContrasenaHash = "hashedpassword",
             FechaCreacion = DateTime.UtcNow
@@ -136,7 +136,7 @@ public class ArchivosHandlerUnitTests
         var usuario = new Usuario
         {
             Id = usuarioId,
-            NombreUsuario = "testuser",
+            NombreCompleto = "testuser",
             CorreoElectronico = "test@example.com",
             ContrasenaHash = "hashedpassword",
             FechaCreacion = DateTime.UtcNow
@@ -202,7 +202,7 @@ public class ArchivosHandlerUnitTests
         var usuario = new Usuario
         {
             Id = usuarioId,
-            NombreUsuario = "testuser",
+            NombreCompleto = "testuser",
             CorreoElectronico = "test@example.com",
             ContrasenaHash = "hashedpassword",
             FechaCreacion = DateTime.UtcNow
@@ -293,7 +293,7 @@ public class ArchivosHandlerUnitTests
         var otroUsuario = new Usuario
         {
             Id = otroUsuarioId,
-            NombreUsuario = "otheruser",
+            NombreCompleto = "otheruser",
             CorreoElectronico = "other@example.com",
             ContrasenaHash = "hashedpassword",
             FechaCreacion = DateTime.UtcNow
@@ -356,7 +356,7 @@ public class ArchivosHandlerUnitTests
         var usuario = new Usuario
         {
             Id = usuarioId,
-            NombreUsuario = "testuser",
+            NombreCompleto = "testuser",
             CorreoElectronico = "test@example.com",
             ContrasenaHash = "hashedpassword",
             FechaCreacion = DateTime.UtcNow
@@ -445,7 +445,7 @@ public class ArchivosHandlerUnitTests
         var otroUsuario = new Usuario
         {
             Id = otroUsuarioId,
-            NombreUsuario = "otheruser",
+            NombreCompleto = "otheruser",
             CorreoElectronico = "other@example.com",
             ContrasenaHash = "hashedpassword",
             FechaCreacion = DateTime.UtcNow

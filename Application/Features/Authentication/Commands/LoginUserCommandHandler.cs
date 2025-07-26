@@ -50,7 +50,7 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginRe
             Usuario = new UsuarioDto
             {
                 Id = usuario.Id,
-                NombreUsuario = usuario.NombreUsuario,
+                NombreCompleto = usuario.NombreCompleto,
                 CorreoElectronico = usuario.CorreoElectronico,
                 FechaCreacion = usuario.FechaCreacion
             }

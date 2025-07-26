@@ -8,7 +8,7 @@ public class Usuario
     
     [Required]
     [MaxLength(100)]
-    public string NombreUsuario { get; set; } = string.Empty;
+    public string NombreCompleto { get; set; } = string.Empty;
     
     [Required]
     [MaxLength(255)]

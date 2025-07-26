@@ -31,7 +31,7 @@ public class JwtTokenService : IJwtTokenService
             Subject = new ClaimsIdentity(new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
-                new Claim(ClaimTypes.Name, usuario.NombreUsuario),
+                new Claim(ClaimTypes.Name, usuario.NombreCompleto),
                 new Claim(ClaimTypes.Email, usuario.CorreoElectronico)
             }),
             Expires = DateTime.UtcNow.AddMinutes(_expirationMinutes),

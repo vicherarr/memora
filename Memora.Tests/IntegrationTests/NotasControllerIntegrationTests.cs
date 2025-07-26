@@ -30,7 +30,7 @@ public class NotasControllerIntegrationTests : IClassFixture<TestWebApplicationF
         var uniqueId = Guid.NewGuid().ToString()[..8];
         var registerRequest = new
         {
-            nombreUsuario = $"testuser_{uniqueId}",
+            nombreCompleto = "Juan Pérez",
             correoElectronico = $"test_{uniqueId}@example.com",
             contrasena = "TestPassword123!"
         };
@@ -59,7 +59,7 @@ public class NotasControllerIntegrationTests : IClassFixture<TestWebApplicationF
         var uniqueId = Guid.NewGuid().ToString()[..8];
         var registerRequest = new
         {
-            nombreUsuario = $"testuser_{uniqueId}",
+            nombreCompleto = "Juan Pérez",
             correoElectronico = $"test_{uniqueId}@example.com",
             contrasena = "TestPassword123!"
         };

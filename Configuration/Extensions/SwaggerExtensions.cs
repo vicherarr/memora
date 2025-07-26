@@ -24,29 +24,35 @@ public static class SwaggerExtensions
             //     options.IncludeXmlComments(xmlPath);
             // }
 
-            // Configure Email/Password Authentication for Swagger (converted to JWT internally)
+            // Configure OAuth2 Password Flow for Swagger with immediate validation
             options.AddSecurityDefinition("Email y Contraseña", new OpenApiSecurityScheme
             {
-                Name = "Authorization",
-                Type = SecuritySchemeType.Http,
-                Scheme = "basic",
-                In = ParameterLocation.Header,
-                Description = @"Autenticación con Email y Contraseña (convertida automáticamente a JWT).
+                Type = SecuritySchemeType.OAuth2,
+                Flows = new OpenApiOAuthFlows
+                {
+                    Password = new OpenApiOAuthFlow
+                    {
+                        TokenUrl = new Uri("/api/autenticacion/swagger-auth", UriKind.Relative),
+                        Scopes = new Dictionary<string, string>
+                        {
+                            {"api", "Access to Memora API"}
+                        }
+                    }
+                },
+                Description = @"Autenticación con Email y Contraseña (OAuth2 Password Flow).
                         
 **INSTRUCCIONES:**
 1. Haz clic en el botón 'Authorize' (candado)
 2. En el campo 'Username': introduce tu **EMAIL** (ej: usuario@email.com)
 3. En el campo 'Password': introduce tu contraseña
-4. Haz clic en 'Authorize'
+4. **IMPORTANTE**: Deja los campos Client ID y Client Secret VACÍOS
+5. Marca el checkbox 'api' si no está marcado
+6. Haz clic en 'Authorize'
 
-**⚠️ IMPORTANTE:** 
-- El campo 'Username' requiere tu EMAIL, no tu nombre de usuario
-- Ejemplo: usuario@gmail.com (no 'Juan Pérez')
-
-**Funcionamiento:** 
-- El sistema convierte automáticamente tus credenciales a un token JWT
-- No necesitas manejar tokens manualmente
-- La autenticación se mantiene durante toda la sesión
+**⚠️ VALIDACIÓN INMEDIATA:** 
+- Las credenciales se validan AL MOMENTO de hacer clic en 'Authorize'
+- Si son incorrectas, el candado NO se cerrará y verás un error
+- Si son correctas, el candado se cerrará automáticamente
 
 **Nota:** Si no tienes cuenta, regístrate primero usando el endpoint /api/autenticacion/registrar"
             });
@@ -62,7 +68,7 @@ public static class SwaggerExtensions
                             Id = "Email y Contraseña"
                         }
                     },
-                    new string[] {}
+                    new string[] { "api" }
                 }
             });
         });

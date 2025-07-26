@@ -21,7 +21,6 @@ public class MemoraDbContext : DbContext
         modelBuilder.Entity<Usuario>(entity =>
         {
             entity.HasKey(e => e.Id);
-            entity.HasIndex(e => e.NombreUsuario).IsUnique();
             entity.HasIndex(e => e.CorreoElectronico).IsUnique();
             
             entity.Property(e => e.Id).ValueGeneratedOnAdd();

@@ -66,21 +66,30 @@ public class BasicAuthToJwtMiddleware
                             }
                             else
                             {
-                                // Authentication failed, remove authorization header to force 401
-                                context.Request.Headers.Remove("Authorization");
+                                // Authentication failed, return 401 immediately
+                                context.Response.StatusCode = 401;
+                                context.Response.Headers["WWW-Authenticate"] = "Basic realm=\"Memora API\"";
+                                await context.Response.WriteAsync("{\"message\":\"Invalid email or password\"}");
+                                return;
                             }
                         }
                         catch
                         {
-                            // Authentication failed, remove authorization header to force 401
-                            context.Request.Headers.Remove("Authorization");
+                            // Authentication failed, return 401 immediately
+                            context.Response.StatusCode = 401;
+                            context.Response.Headers["WWW-Authenticate"] = "Basic realm=\"Memora API\"";
+                            await context.Response.WriteAsync("{\"message\":\"Invalid email or password\"}");
+                            return;
                         }
                     }
                 }
                 catch
                 {
-                    // If parsing fails, remove authorization header to force 401
-                    context.Request.Headers.Remove("Authorization");
+                    // If parsing fails, return 401 immediately
+                    context.Response.StatusCode = 401;
+                    context.Response.Headers["WWW-Authenticate"] = "Basic realm=\"Memora API\"";
+                    await context.Response.WriteAsync("{\"message\":\"Invalid credentials format\"}");
+                    return;
                 }
             }
         }

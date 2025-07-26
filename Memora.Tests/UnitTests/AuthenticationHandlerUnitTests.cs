@@ -41,7 +41,7 @@ public class AuthenticationHandlerUnitTests
         var handler = new RegisterUserCommandHandler(context, mockPasswordHashService.Object, mockJwtTokenService.Object);
         var command = new RegisterUserCommand
         {
-            NombreUsuario = "testuser",
+            NombreCompleto = "testuser",
             CorreoElectronico = "test@example.com",
             Contrasena = "TestPassword123!"
         };
@@ -53,7 +53,7 @@ public class AuthenticationHandlerUnitTests
         result.Should().NotBeNull();
         result.Token.Should().Be("test-jwt-token");
         result.Usuario.Should().NotBeNull();
-        result.Usuario.NombreUsuario.Should().Be("testuser");
+        result.Usuario.NombreCompleto.Should().Be("testuser");
         result.Usuario.CorreoElectronico.Should().Be("test@example.com");
 
         var userInDb = await context.Usuarios.FirstOrDefaultAsync(u => u.CorreoElectronico == "test@example.com");
@@ -73,7 +73,7 @@ public class AuthenticationHandlerUnitTests
         var existingUser = new Usuario
         {
             Id = Guid.NewGuid(),
-            NombreUsuario = "testuser",
+            NombreCompleto = "testuser",
             CorreoElectronico = "test@example.com",
             ContrasenaHash = "existinghashedpassword",
             FechaCreacion = DateTime.UtcNow
@@ -85,7 +85,7 @@ public class AuthenticationHandlerUnitTests
         var handler = new RegisterUserCommandHandler(context, mockPasswordHashService.Object, mockJwtTokenService.Object);
         var command = new RegisterUserCommand
         {
-            NombreUsuario = "testuser",
+            NombreCompleto = "testuser",
             CorreoElectronico = "test@example.com",
             Contrasena = "TestPassword123!"
         };
@@ -93,7 +93,7 @@ public class AuthenticationHandlerUnitTests
         // Act & Assert
         await FluentActions.Invoking(() => handler.Handle(command, CancellationToken.None))
             .Should().ThrowAsync<ArgumentException>()
-            .WithMessage("User with this email or username already exists");
+            .WithMessage("User with this email already exists");
     }
 
     [Fact]
@@ -107,7 +107,7 @@ public class AuthenticationHandlerUnitTests
         var existingUser = new Usuario
         {
             Id = Guid.NewGuid(),
-            NombreUsuario = "testuser",
+            NombreCompleto = "testuser",
             CorreoElectronico = "test@example.com",
             ContrasenaHash = "hashedpassword",
             FechaCreacion = DateTime.UtcNow
@@ -139,7 +139,7 @@ public class AuthenticationHandlerUnitTests
         result.Should().NotBeNull();
         result.Token.Should().Be("test-jwt-token");
         result.Usuario.Should().NotBeNull();
-        result.Usuario.NombreUsuario.Should().Be("testuser");
+        result.Usuario.NombreCompleto.Should().Be("testuser");
         result.Usuario.CorreoElectronico.Should().Be("test@example.com");
     }
 
@@ -174,7 +174,7 @@ public class AuthenticationHandlerUnitTests
         var existingUser = new Usuario
         {
             Id = Guid.NewGuid(),
-            NombreUsuario = "testuser",
+            NombreCompleto = "testuser",
             CorreoElectronico = "test@example.com",
             ContrasenaHash = "hashedpassword",
             FechaCreacion = DateTime.UtcNow

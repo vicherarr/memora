@@ -6,7 +6,7 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
 {
     public RegisterUserCommandValidator()
     {
-        RuleFor(x => x.NombreUsuario)
+        RuleFor(x => x.NombreCompleto)
             .NotEmpty().WithMessage("Full name is required")
             .Length(2, 100).WithMessage("Full name must be between 2 and 100 characters")
             .Matches(@"^[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ\s.-]+$").WithMessage("Full name can only contain letters, spaces, dots, and dashes");

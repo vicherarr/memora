@@ -370,9 +370,20 @@
 - ✅ **REST Compliance**: Corregido DELETE endpoint para devolver 204 NoContent
 
 #### 7. **Database Location for Tests**
-- ✅ **Test Database**: `C:\develop\Memora\Memora.Tests\bin\Debug\net8.0\TestMemoria.db`
+- ✅ **Test Database**: `/home/victor/develop/Memora/memora/Memora.Tests/bin/Debug/net8.0/TestMemoria.db`
 - ✅ **SQLite Format**: Mismo motor que producción para consistencia
 - ✅ **Data Isolation**: Base de datos separada para pruebas
+
+#### 8. **Recent Updates - nombreCompleto Refactoring** 🆕
+- ✅ **Field Refactoring**: Successfully changed `nombreUsuario` to `nombreCompleto` throughout the system
+- ✅ **Database Migration**: Applied `RenameNombreUsuarioToNombreCompleto` and `RemoveNombreCompletoUniqueConstraint` migrations
+- ✅ **Validation Update**: Updated validation rules to support full names with spaces and accents
+- ✅ **Unique Constraint**: Removed inappropriate unique constraint on full names (only email remains unique)
+- ✅ **Integration Tests Fixed**: Updated all integration tests to use new field name and fixed schema mismatches
+- ✅ **Unit Tests Fixed**: Updated authentication handler unit tests to match new error messages
+- ✅ **Registration Logic**: Updated to only check email uniqueness, allowing duplicate full names
+- ✅ **Swagger Documentation**: Updated OAuth2 password flow to reflect that login is email-based
+- ✅ **Environment Controls**: Swagger completely disabled in production for security
 
 ### Fase 9: Documentation & Deployment 📋 PENDIENTE
 **Objetivo**: Complete documentation and deployment preparation
@@ -410,12 +421,12 @@
 - **Authentication**: ✅ Implementada (JWT + BCrypt)
 - **Notes CRUD**: ✅ Implementada (MediatR + EF Core)
 - **File Attachments**: ✅ Implementada (Upload/Download con validación completa)
-- **Testing**: ✅ Implementada (11/11 pruebas pasando - 100% éxito)
+- **Testing**: ✅ Implementada (12/12 pruebas pasando - 100% éxito)
 - **Validation & Error Handling**: ⏳ Pendiente (Fase 6)
 - **Security & Performance**: ⏳ Pendiente (Fase 7)
 - **Documentation & Deployment**: ⏳ Pendiente (Fase 9)
 
 ---
 
-*Última actualización: 25 de julio de 2025*
+*Última actualización: 26 de julio de 2025*
 *Proyecto: Memora API - Sistema RESTful para gestión de notas con archivos multimedia*

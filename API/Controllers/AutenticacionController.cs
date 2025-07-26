@@ -23,7 +23,7 @@ public class AutenticacionController : ControllerBase
         {
             var command = new RegisterUserCommand
             {
-                NombreUsuario = request.NombreUsuario,
+                NombreCompleto = request.NombreCompleto,
                 CorreoElectronico = request.CorreoElectronico,
                 Contrasena = request.Contrasena
             };
@@ -86,26 +86,44 @@ public class AutenticacionController : ControllerBase
     /// <param name="request">Credenciales de usuario</param>
     /// <returns>Token JWT para usar en Authorization</returns>
     [HttpPost("swagger-auth")]
-    public async Task<ActionResult<SwaggerTokenResponseDto>> SwaggerAuth(SwaggerAuthDto request)
+    public async Task<ActionResult> SwaggerAuth([FromForm] string username, [FromForm] string password, [FromForm] string grant_type = "password")
     {
         try
         {
+            if (grant_type != "password")
+            {
+                return BadRequest(new { error = "unsupported_grant_type" });
+            }
+
             var command = new LoginUserCommand
             {
-                CorreoElectronico = request.CorreoElectronico,
-                Contrasena = request.Contrasena
+                CorreoElectronico = username, // OAuth2 usa 'username' pero nosotros esperamos email
+                Contrasena = password
             };
 
             var result = await _mediator.Send(command);
-            return Ok(new SwaggerTokenResponseDto { Token = result.Token });
+            
+            // Respuesta en formato OAuth2 Token Response
+            return Ok(new 
+            { 
+                access_token = result.Token,
+                token_type = "Bearer",
+                expires_in = 3600 // 1 hora en segundos
+            });
         }
-        catch (UnauthorizedAccessException ex)
+        catch (UnauthorizedAccessException)
         {
-            return Unauthorized(new { message = ex.Message });
+            return BadRequest(new { 
+                error = "invalid_grant",
+                error_description = "Invalid email or password" 
+            });
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return StatusCode(500, new { message = "An internal server error occurred" });
+            return StatusCode(500, new { 
+                error = "server_error",
+                error_description = "An internal server error occurred" 
+            });
         }
     }
 }

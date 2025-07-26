@@ -26,20 +26,19 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, R
         {
             // Check if user already exists
             var existingUser = await _context.Usuarios
-                .FirstOrDefaultAsync(u => u.CorreoElectronico == request.CorreoElectronico ||
-                                         u.NombreUsuario == request.NombreUsuario,
+                .FirstOrDefaultAsync(u => u.CorreoElectronico == request.CorreoElectronico,
                                     cancellationToken);
 
             if (existingUser != null)
             {
-                throw new ArgumentException("User with this email or username already exists");
+                throw new ArgumentException("User with this email already exists");
             }
 
             // Create new user
             var usuario = new Usuario
             {
                 Id = Guid.NewGuid(),
-                NombreUsuario = request.NombreUsuario,
+                NombreCompleto = request.NombreCompleto,
                 CorreoElectronico = request.CorreoElectronico,
                 ContrasenaHash = _passwordHashService.HashPassword(request.Contrasena),
                 FechaCreacion = DateTime.UtcNow
@@ -58,7 +57,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, R
                 Usuario = new UsuarioDto
                 {
                     Id = usuario.Id,
-                    NombreUsuario = usuario.NombreUsuario,
+                    NombreCompleto = usuario.NombreCompleto,
                     CorreoElectronico = usuario.CorreoElectronico,
                     FechaCreacion = usuario.FechaCreacion
                 },

@@ -78,7 +78,7 @@ public class ServicesUnitTests
         var user = new Usuario
         {
             Id = Guid.NewGuid(),
-            NombreUsuario = "testuser",
+            NombreCompleto = "testuser",
             CorreoElectronico = "test@example.com",
             ContrasenaHash = "hashedpassword",
             FechaCreacion = DateTime.UtcNow
@@ -94,7 +94,7 @@ public class ServicesUnitTests
         var jsonToken = tokenHandler.ReadJwtToken(token);
 
         jsonToken.Claims.Should().ContainSingle(c => c.Type == "nameid").Which.Value.Should().Be(user.Id.ToString());
-        jsonToken.Claims.Should().ContainSingle(c => c.Type == "unique_name").Which.Value.Should().Be(user.NombreUsuario);
+        jsonToken.Claims.Should().ContainSingle(c => c.Type == "unique_name").Which.Value.Should().Be(user.NombreCompleto);
         jsonToken.Claims.Should().ContainSingle(c => c.Type == "email").Which.Value.Should().Be(user.CorreoElectronico);
     }
 
