@@ -22,51 +22,46 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, R
 
     public async Task<RegisterResponseDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
-        try
+
+        // Check if user already exists
+        var existingUser = await _context.Usuarios
+            .FirstOrDefaultAsync(u => u.CorreoElectronico == request.CorreoElectronico,
+                                cancellationToken);
+
+        if (existingUser != null)
         {
-            // Check if user already exists
-            var existingUser = await _context.Usuarios
-                .FirstOrDefaultAsync(u => u.CorreoElectronico == request.CorreoElectronico,
-                                    cancellationToken);
-
-            if (existingUser != null)
-            {
-                throw new ArgumentException("User with this email already exists");
-            }
-
-            // Create new user
-            var usuario = new Usuario
-            {
-                Id = Guid.NewGuid(),
-                NombreCompleto = request.NombreCompleto,
-                CorreoElectronico = request.CorreoElectronico,
-                ContrasenaHash = _passwordHashService.HashPassword(request.Contrasena),
-                FechaCreacion = DateTime.UtcNow
-            };
-
-            _context.Usuarios.Add(usuario);
-            await _context.SaveChangesAsync(cancellationToken);
-
-            // Generate JWT token
-            var token = _jwtTokenService.GenerateToken(usuario);
-            var expiresAt = _jwtTokenService.GetExpirationTime();
-
-            return new RegisterResponseDto
-            {
-                Token = token,
-                Usuario = new UsuarioDto
-                {
-                    Id = usuario.Id,
-                    NombreCompleto = usuario.NombreCompleto,
-                    CorreoElectronico = usuario.CorreoElectronico,
-                    FechaCreacion = usuario.FechaCreacion
-                },
-                ExpiresAt = expiresAt
-            };
+            throw new ArgumentException("User with this email already exists");
         }
-        catch (Exception ex)
+
+        // Create new user
+        var usuario = new Usuario
         {
-            throw;
-        }
+            Id = Guid.NewGuid(),
+            NombreCompleto = request.NombreCompleto,
+            CorreoElectronico = request.CorreoElectronico,
+            ContrasenaHash = _passwordHashService.HashPassword(request.Contrasena),
+            FechaCreacion = DateTime.UtcNow
+        };
+
+        _context.Usuarios.Add(usuario);
+        await _context.SaveChangesAsync(cancellationToken);
+
+        // Generate JWT token
+        var token = _jwtTokenService.GenerateToken(usuario);
+        var expiresAt = _jwtTokenService.GetExpirationTime();
+
+        return new RegisterResponseDto
+        {
+            Token = token,
+            Usuario = new UsuarioDto
+            {
+                Id = usuario.Id,
+                NombreCompleto = usuario.NombreCompleto,
+                CorreoElectronico = usuario.CorreoElectronico,
+                FechaCreacion = usuario.FechaCreacion
+            },
+            ExpiresAt = expiresAt
+        };
+
     }
 }
