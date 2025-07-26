@@ -11,17 +11,18 @@ public static class WebApplicationExtensions
         // Global Exception Handling Middleware - must be first to catch all exceptions
         app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
         
-        // Only enable Swagger in Development environment for security
-        if (app.Environment.IsDevelopment())
+        // Enable Swagger in Development and Docker environments
+        if (app.Environment.IsDevelopment() || Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Docker")
         {
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Memora API v1");
                 c.RoutePrefix = "swagger"; // Set Swagger UI at /swagger
+                c.DocumentTitle = "📱 Memora API - Interactive Documentation";
             });
             
-            // Add Basic Auth to JWT conversion middleware for Swagger (Development only)
+            // Add Basic Auth to JWT conversion middleware for Swagger
             app.UseMiddleware<BasicAuthToJwtMiddleware>();
         }
 

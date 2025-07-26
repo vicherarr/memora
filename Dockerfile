@@ -34,4 +34,7 @@ USER root
 RUN chmod 666 /app/memora.db && chown $APP_UID:$APP_UID /app/memora.db
 USER $APP_UID
 
+# Set environment to enable Swagger in Docker
+ENV ASPNETCORE_ENVIRONMENT=Docker
+
 ENTRYPOINT ["dotnet", "Memora.dll"]

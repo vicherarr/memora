@@ -7,8 +7,8 @@ builder.Services.AddApplicationServices();
 builder.Services.AddDatabaseConfiguration(builder.Configuration, builder.Environment);
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
-// Only add Swagger in Development environment for security
-if (builder.Environment.IsDevelopment())
+// Add Swagger in Development and Docker environments
+if (builder.Environment.IsDevelopment() || Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Docker")
 {
     builder.Services.AddSwaggerConfiguration();
 }

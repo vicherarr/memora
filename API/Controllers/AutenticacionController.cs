@@ -5,8 +5,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
+/// <summary>
+/// Controlador para la autenticación de usuarios en la API Memora
+/// </summary>
+/// <remarks>
+/// Este controlador maneja el registro de nuevos usuarios y el inicio de sesión.
+/// Todos los endpoints devuelven tokens JWT para autenticación en endpoints protegidos.
+/// </remarks>
 [ApiController]
 [Route("api/[controller]")]
+[Produces("application/json")]
 public class AutenticacionController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -16,7 +24,39 @@ public class AutenticacionController : ControllerBase
         _mediator = mediator;
     }
 
+    /// <summary>
+    /// Registra un nuevo usuario en el sistema
+    /// </summary>
+    /// <remarks>
+    /// Crea una nueva cuenta de usuario con validación completa:
+    /// 
+    /// **Validaciones aplicadas:**
+    /// - Email único en el sistema
+    /// - Contraseña segura (8+ caracteres, mayúscula, minúscula, número)
+    /// - Nombre completo válido (2-100 caracteres)
+    /// - Bloqueo de emails desechables
+    /// 
+    /// **Ejemplo de request:**
+    /// ```json
+    /// {
+    ///   "nombreCompleto": "Juan Pérez García",
+    ///   "correoElectronico": "juan.perez@email.com",
+    ///   "contrasena": "MiPassword123"
+    /// }
+    /// ```
+    /// 
+    /// **Respuesta exitosa:**
+    /// Devuelve un token JWT válido por 1 hora que puede usarse inmediatamente.
+    /// </remarks>
+    /// <param name="request">Datos del nuevo usuario</param>
+    /// <returns>Token JWT y información del usuario registrado</returns>
+    /// <response code="200">Usuario registrado exitosamente</response>
+    /// <response code="400">Datos de entrada inválidos o email ya existe</response>
+    /// <response code="500">Error interno del servidor</response>
     [HttpPost("registrar")]
+    [ProducesResponseType(typeof(RegisterResponseDto), 200)]
+    [ProducesResponseType(typeof(object), 400)]
+    [ProducesResponseType(typeof(object), 500)]
     public async Task<ActionResult<RegisterResponseDto>> Register(RegisterUserDto request)
     {
         try
@@ -43,7 +83,44 @@ public class AutenticacionController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Inicia sesión de un usuario existente
+    /// </summary>
+    /// <remarks>
+    /// Autentica las credenciales del usuario y devuelve un token JWT:
+    /// 
+    /// **Ejemplo de request:**
+    /// ```json
+    /// {
+    ///   "correoElectronico": "juan.perez@email.com",
+    ///   "contrasena": "MiPassword123"
+    /// }
+    /// ```
+    /// 
+    /// **Respuesta exitosa:**
+    /// ```json
+    /// {
+    ///   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    ///   "usuario": {
+    ///     "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    ///     "nombreCompleto": "Juan Pérez García",
+    ///     "correoElectronico": "juan.perez@email.com"
+    ///   }
+    /// }
+    /// ```
+    /// 
+    /// **Uso del token:**
+    /// Incluye el token en el header Authorization: `Bearer {token}`
+    /// </remarks>
+    /// <param name="request">Credenciales de acceso</param>
+    /// <returns>Token JWT y información del usuario</returns>
+    /// <response code="200">Inicio de sesión exitoso</response>
+    /// <response code="401">Credenciales inválidas</response>
+    /// <response code="500">Error interno del servidor</response>
     [HttpPost("login")]
+    [ProducesResponseType(typeof(LoginResponseDto), 200)]
+    [ProducesResponseType(typeof(object), 401)]
+    [ProducesResponseType(typeof(object), 500)]
     public async Task<ActionResult<LoginResponseDto>> Login(LoginUserDto request)
     {
         try
@@ -68,24 +145,44 @@ public class AutenticacionController : ControllerBase
     }
 
     /// <summary>
-    /// Endpoint de autenticación simplificado para Swagger UI
+    /// 🔐 Endpoint de autenticación OAuth2 para Swagger UI
     /// </summary>
     /// <remarks>
-    /// **ÚSALO PARA AUTENTICARTE EN SWAGGER:**
+    /// **GUÍA PASO A PASO PARA AUTENTICARTE EN SWAGGER:**
     /// 
-    /// 1. Introduce tu email y contraseña
-    /// 2. Ejecuta este endpoint
-    /// 3. Copia el token de la respuesta
-    /// 4. Haz clic en "Authorize" arriba
-    /// 5. Pega el token (sin 'Bearer ') y autoriza
+    /// **Opción 1 - Botón Authorize (Recomendado):**
+    /// 1. Haz clic en el botón "🔓 Authorize" en la parte superior
+    /// 2. En "OAuth2 (OAuth2, password)" introduce:
+    ///    - **username:** tu email (ej: test@test.com)
+    ///    - **password:** tu contraseña (ej: Test123456)
+    /// 3. Haz clic en "Authorize"
+    /// 4. ¡Listo! Ya puedes usar todos los endpoints protegidos
     /// 
-    /// **Usuarios de prueba:**
-    /// - Email: test@test.com / Contraseña: Test123456
-    /// - Email: dockertest@test.com / Contraseña: Test123456
+    /// **Opción 2 - Endpoint manual:**
+    /// 1. Usa este endpoint con tus credenciales
+    /// 2. Copia el `access_token` de la respuesta
+    /// 3. Haz clic en "🔓 Authorize" arriba
+    /// 4. En "Bearer (http, Bearer)" pega el token
+    /// 5. Haz clic en "Authorize"
+    /// 
+    /// **🧪 Usuarios de prueba disponibles:**
+    /// - Email: `test@test.com` / Contraseña: `Test123456`
+    /// - Email: `dockertest@test.com` / Contraseña: `Test123456`
+    /// 
+    /// **⚠️ Nota importante:**
+    /// Los tokens JWT expiran en 1 hora. Si obtienes errores 401, vuelve a autenticarte.
     /// </remarks>
-    /// <param name="request">Credenciales de usuario</param>
-    /// <returns>Token JWT para usar en Authorization</returns>
+    /// <param name="username">Email del usuario</param>
+    /// <param name="password">Contraseña del usuario</param>
+    /// <param name="grant_type">Tipo de autorización OAuth2 (debe ser 'password')</param>
+    /// <returns>Token de acceso OAuth2 estándar</returns>
+    /// <response code="200">Autenticación exitosa - token generado</response>
+    /// <response code="400">Credenciales inválidas o tipo de grant no soportado</response>
+    /// <response code="500">Error interno del servidor</response>
     [HttpPost("swagger-auth")]
+    [ProducesResponseType(typeof(object), 200)]
+    [ProducesResponseType(typeof(object), 400)]
+    [ProducesResponseType(typeof(object), 500)]
     public async Task<ActionResult> SwaggerAuth([FromForm] string username, [FromForm] string password, [FromForm] string grant_type = "password")
     {
         try

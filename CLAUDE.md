@@ -145,9 +145,15 @@ public enum TipoDeArchivo
 
 ## Configuration
 
-- **Swagger**: Auto-generated API documentation at `/swagger`
+### Swagger Documentation
+- **Development**: Auto-generated API documentation at `/swagger` (always enabled)
+- **Docker**: Enabled with `ASPNETCORE_ENVIRONMENT=Docker` environment variable
+- **Production**: Disabled for security (override by setting environment to "Docker")
+- **Features**: Comprehensive documentation with examples, OAuth2 flow, and interactive testing
+
+### Other Configuration
 - **HTTPS**: Required for all communications
-- **JWT**: Token-based authentication system
+- **JWT**: Token-based authentication system with 1-hour expiration
 - **File Storage**: Direct database storage as binary data (BLOB)
 - **User Secrets**: ID `3d6f68c0-06bf-43b1-b94a-c939b89cfd3e`
 
