@@ -17,8 +17,18 @@ public class GetUserNotasQueryHandler : IRequestHandler<GetUserNotasQuery, Pagin
     public async Task<PaginatedNotasDto> Handle(GetUserNotasQuery request, CancellationToken cancellationToken)
     {
         var query = _context.Notas
-            .Where(n => n.UsuarioId == request.UsuarioId)
-            .OrderByDescending(n => n.FechaModificacion);
+            .Where(n => n.UsuarioId == request.UsuarioId);
+
+        // Aplicar filtro de búsqueda si se proporciona
+        if (!string.IsNullOrWhiteSpace(request.SearchTerm))
+        {
+            var searchTerm = request.SearchTerm.ToLower();
+            query = query.Where(n => 
+                (n.Titulo != null && n.Titulo.ToLower().Contains(searchTerm)) ||
+                n.Contenido.ToLower().Contains(searchTerm));
+        }
+
+        query = query.OrderByDescending(n => n.FechaModificacion);
 
         var totalCount = await query.CountAsync(cancellationToken);
 

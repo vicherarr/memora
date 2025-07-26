@@ -23,15 +23,17 @@ public class NotasController : ControllerBase
     }
 
     /// <summary>
-    /// Obtiene las notas del usuario con paginación
+    /// Obtiene las notas del usuario con paginación y búsqueda opcional
     /// </summary>
     /// <param name="pageNumber">Número de página (por defecto 1)</param>
     /// <param name="pageSize">Tamaño de página (por defecto 10, máximo 100)</param>
+    /// <param name="searchTerm">Término de búsqueda opcional para filtrar notas por título o contenido</param>
     /// <returns>Lista paginada de notas del usuario</returns>
     [HttpGet]
     public async Task<ActionResult<PaginatedNotasDto>> GetUserNotas(
         [FromQuery] int pageNumber = 1,
-        [FromQuery] int pageSize = 10)
+        [FromQuery] int pageSize = 10,
+        [FromQuery] string? searchTerm = null)
     {
         try
         {
@@ -41,7 +43,8 @@ public class NotasController : ControllerBase
             {
                 UsuarioId = usuarioId,
                 PageNumber = pageNumber,
-                PageSize = pageSize
+                PageSize = pageSize,
+                SearchTerm = searchTerm
             };
 
             var result = await _mediator.Send(query);

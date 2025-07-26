@@ -169,6 +169,7 @@
 
 #### 1. **Application Layer** (`/Application/Features/Notas/`)
 - ✅ GetUserNotasQuery and GetUserNotasQueryHandler: Paginated user notes retrieval
+- ✅ **GetUserNotasQuery with Search**: Added optional SearchTerm parameter for filtering by title/content
 - ✅ GetNotaByIdQuery and GetNotaByIdQueryHandler: Specific note retrieval with attachments count
 - ✅ CreateNotaCommand and CreateNotaCommandHandler: New note creation
 - ✅ UpdateNotaCommand and UpdateNotaCommandHandler: Note modification
@@ -186,6 +187,7 @@
 #### 3. **API Controller** (`/API/Controllers/`)
 - ✅ NotasController with complete CRUD operations
 - ✅ GET /api/notas: Paginated user notes (default 10 per page, max 100)
+- ✅ **GET /api/notas with Search**: Optional search functionality by title or content
 - ✅ GET /api/notas/{id}: Specific note with attachments count
 - ✅ POST /api/notas: Create new note
 - ✅ PUT /api/notas/{id}: Update existing note
@@ -279,7 +281,53 @@
 
 ---
 
-## Fase 8: Testing Strategy ✅ COMPLETADA
+---
+
+## Próximas Fases Pendientes:
+
+### Fase 6: Validation & Error Handling 📋 PENDIENTE
+**Objetivo**: Implement comprehensive validation and centralized error handling
+
+**Tasks**:
+1. **FluentValidation Rules**
+   - User registration validation (email format, password strength)
+   - Note validation (title length, content requirements)
+   - File validation (size limits, allowed types, MIME validation)
+
+2. **MediatR Pipeline Behaviors** (`/Application/Common/Behaviours/`)
+   - `ValidationBehaviour<TRequest, TResponse>`: Automatic validation
+   - `LoggingBehaviour<TRequest, TResponse>`: Request/response logging
+   - `PerformanceBehaviour<TRequest, TResponse>`: Performance monitoring
+
+3. **Global Exception Handling** (`/API/Middleware/`)
+   - `GlobalExceptionHandlingMiddleware`
+   - Problem Details (RFC 7807) implementation
+   - Custom exception types for business logic violations
+
+### Fase 7: Security & Performance Optimizations 📋 PENDIENTE
+**Objetivo**: Ensure security best practices and optimize performance
+
+**Tasks**:
+1. **Security Enhancements**
+   - Input sanitization for all user inputs
+   - SQL injection prevention through EF Core
+   - XSS protection for text content
+   - Rate limiting for API endpoints
+   - CORS configuration for mobile app
+
+2. **Performance Optimizations**
+   - Database query optimization with proper includes
+   - Pagination implementation with efficient queries
+   - Caching strategy for frequently accessed data
+   - Database indexes for search performance
+   - Memory optimization for large file handling
+
+3. **Monitoring & Logging**
+   - Application Insights or Serilog configuration
+   - Performance counters and metrics
+   - Health checks implementation
+
+### Fase 8: Testing Strategy ✅ COMPLETADA
 **Objetivo**: Comprehensive testing coverage
 
 ### ✅ Tareas Completadas:
@@ -326,32 +374,46 @@
 - ✅ **SQLite Format**: Mismo motor que producción para consistencia
 - ✅ **Data Isolation**: Base de datos separada para pruebas
 
----
-
-## Próximas Fases Pendientes:
-
-### Fase 6: Validation & Error Handling 📋 PENDIENTE
-**Objetivo**: Implement comprehensive validation and centralized error handling
-
-### Fase 7: Security & Performance Optimizations 📋 PENDIENTE
-**Objetivo**: Ensure security best practices and optimize performance
-
 ### Fase 9: Documentation & Deployment 📋 PENDIENTE
 **Objetivo**: Complete documentation and deployment preparation
+
+**Tasks**:
+1. **API Documentation**
+   - Comprehensive Swagger/OpenAPI documentation
+   - Request/response examples
+   - Authentication documentation
+   - Error response documentation
+
+2. **Deployment Configuration**
+   - Docker configuration optimization
+   - Environment-specific appsettings
+   - Database migration scripts
+   - CI/CD pipeline setup
 
 ---
 
 ## Resumen de Estado:
 - **Completadas**: 6/9 fases (67%)
+  - ✅ Fase 1: Project Foundation & Configuration
+  - ✅ Fase 2: Domain Models & Database Setup
+  - ✅ Fase 3: Authentication System with MediatR
+  - ✅ Fase 4: Notes Management Features
+  - ✅ Fase 5: File Attachment Management
+  - ✅ Fase 8: Testing Strategy
 - **En progreso**: 0/9 fases
 - **Pendientes**: 3/9 fases
+  - 📋 Fase 6: Validation & Error Handling
+  - 📋 Fase 7: Security & Performance Optimizations
+  - 📋 Fase 9: Documentation & Deployment
 - **Compilación**: ✅ Exitosa (0 errores, solo warnings de documentación XML)
 - **Docker Build**: ✅ Exitosa
 - **Authentication**: ✅ Implementada (JWT + BCrypt)
 - **Notes CRUD**: ✅ Implementada (MediatR + EF Core)
 - **File Attachments**: ✅ Implementada (Upload/Download con validación completa)
 - **Testing**: ✅ Implementada (11/11 pruebas pasando - 100% éxito)
-- **Despliegue**: ⏳ Pendiente (Fase 9)
+- **Validation & Error Handling**: ⏳ Pendiente (Fase 6)
+- **Security & Performance**: ⏳ Pendiente (Fase 7)
+- **Documentation & Deployment**: ⏳ Pendiente (Fase 9)
 
 ---
 
