@@ -7,9 +7,9 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
     public RegisterUserCommandValidator()
     {
         RuleFor(x => x.NombreUsuario)
-            .NotEmpty().WithMessage("Username is required")
-            .Length(3, 100).WithMessage("Username must be between 3 and 100 characters")
-            .Matches("^[a-zA-Z0-9_.-]+$").WithMessage("Username can only contain letters, numbers, dots, dashes and underscores");
+            .NotEmpty().WithMessage("Full name is required")
+            .Length(2, 100).WithMessage("Full name must be between 2 and 100 characters")
+            .Matches(@"^[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ\s.-]+$").WithMessage("Full name can only contain letters, spaces, dots, and dashes");
 
         RuleFor(x => x.CorreoElectronico)
             .NotEmpty().WithMessage("Email is required")

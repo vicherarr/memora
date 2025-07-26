@@ -6,7 +6,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplicationServices();
 builder.Services.AddDatabaseConfiguration(builder.Configuration, builder.Environment);
 builder.Services.AddJwtAuthentication(builder.Configuration);
-builder.Services.AddSwaggerConfiguration();
+
+// Only add Swagger in Development environment for security
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddSwaggerConfiguration();
+}
 
 var app = builder.Build();
 

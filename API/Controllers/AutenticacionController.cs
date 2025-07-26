@@ -37,7 +37,9 @@ public class AutenticacionController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, new { message = "An internal server error occurred" });
+            Console.WriteLine($"Registration error: {ex.Message}");
+            Console.WriteLine($"Stack trace: {ex.StackTrace}");
+            return StatusCode(500, new { message = "An internal server error occurred", details = ex.Message });
         }
     }
 
