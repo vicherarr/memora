@@ -29,7 +29,7 @@ public class AuthenticationHandlerUnitTests
         var mockPasswordHashService = new Mock<IPasswordHashService>();
         var mockJwtTokenService = new Mock<IJwtTokenService>();
 
-        mockPasswordHashService.Setup(x => x.HashPassword("TestPassword123!"))
+        mockPasswordHashService.Setup(x => x.HashPassword("SecureP@ssw0rd2024!"))
             .Returns("hashedpassword");
         
         mockJwtTokenService.Setup(x => x.GenerateToken(It.IsAny<Usuario>()))
@@ -43,7 +43,7 @@ public class AuthenticationHandlerUnitTests
         {
             NombreCompleto = "testuser",
             CorreoElectronico = "test@example.com",
-            Contrasena = "TestPassword123!"
+            Contrasena = "SecureP@ssw0rd2024!"
         };
 
         // Act
@@ -87,7 +87,7 @@ public class AuthenticationHandlerUnitTests
         {
             NombreCompleto = "testuser",
             CorreoElectronico = "test@example.com",
-            Contrasena = "TestPassword123!"
+            Contrasena = "SecureP@ssw0rd2024!"
         };
 
         // Act & Assert
@@ -116,7 +116,7 @@ public class AuthenticationHandlerUnitTests
         context.Usuarios.Add(existingUser);
         await context.SaveChangesAsync();
 
-        mockPasswordHashService.Setup(x => x.VerifyPassword("TestPassword123!", "hashedpassword"))
+        mockPasswordHashService.Setup(x => x.VerifyPassword("SecureP@ssw0rd2024!", "hashedpassword"))
             .Returns(true);
         
         mockJwtTokenService.Setup(x => x.GenerateToken(It.IsAny<Usuario>()))
@@ -129,7 +129,7 @@ public class AuthenticationHandlerUnitTests
         var command = new LoginUserCommand
         {
             CorreoElectronico = "test@example.com",
-            Contrasena = "TestPassword123!"
+            Contrasena = "SecureP@ssw0rd2024!"
         };
 
         // Act
@@ -155,7 +155,7 @@ public class AuthenticationHandlerUnitTests
         var command = new LoginUserCommand
         {
             CorreoElectronico = "nonexistent@example.com",
-            Contrasena = "TestPassword123!"
+            Contrasena = "SecureP@ssw0rd2024!"
         };
 
         // Act & Assert

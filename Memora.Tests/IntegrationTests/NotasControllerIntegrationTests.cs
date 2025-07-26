@@ -32,7 +32,7 @@ public class NotasControllerIntegrationTests : IClassFixture<TestWebApplicationF
         {
             nombreCompleto = "Juan Pérez",
             correoElectronico = $"test_{uniqueId}@example.com",
-            contrasena = "TestPassword123!"
+            contrasena = "SecureP@ssw0rd2024!"
         };
 
         var registerJson = JsonSerializer.Serialize(registerRequest);
@@ -61,7 +61,7 @@ public class NotasControllerIntegrationTests : IClassFixture<TestWebApplicationF
         {
             nombreCompleto = "Juan Pérez",
             correoElectronico = $"test_{uniqueId}@example.com",
-            contrasena = "TestPassword123!"
+            contrasena = "SecureP@ssw0rd2024!"
         };
 
         var registerJson = JsonSerializer.Serialize(registerRequest);

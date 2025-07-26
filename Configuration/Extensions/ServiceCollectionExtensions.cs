@@ -16,7 +16,9 @@ public static class ServiceCollectionExtensions
         // Add MediatR
         services.AddMediatR(typeof(RegisterUserCommand).Assembly);
 
-        // Add MediatR Pipeline Behaviors
+        // Add MediatR Pipeline Behaviors (order matters - they execute in registration order)
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehaviour<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
 
         // Add AutoMapper

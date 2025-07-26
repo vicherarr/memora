@@ -8,6 +8,9 @@ public static class WebApplicationExtensions
     {
         // Configure the HTTP request pipeline.
         
+        // Global Exception Handling Middleware - must be first to catch all exceptions
+        app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
+        
         // Only enable Swagger in Development environment for security
         if (app.Environment.IsDevelopment())
         {
