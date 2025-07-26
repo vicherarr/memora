@@ -493,4 +493,57 @@ public class ArchivosHandlerUnitTests
         // Assert
         result.Should().BeNull();
     }
+
+    [Fact]
+    public async Task UploadArchivoCommandHandler_ShouldThrowException_WhenNotaDoesNotBelongToUser()
+    {
+        // Arrange
+        using var context = GetInMemoryDbContext();
+        var mockFileProcessingService = new Mock<IFileProcessingService>();
+
+        var usuarioId = Guid.NewGuid();
+        var otroUsuarioId = Guid.NewGuid();
+        var notaId = Guid.NewGuid();
+
+        var otroUsuario = new Usuario
+        {
+            Id = otroUsuarioId,
+            NombreCompleto = "otheruser",
+            CorreoElectronico = "other@example.com",
+            ContrasenaHash = "hashedpassword",
+            FechaCreacion = DateTime.UtcNow
+        };
+
+        var notaDeOtroUsuario = new Nota
+        {
+            Id = notaId,
+            Titulo = "Other User's Note",
+            Contenido = "Protected Content",
+            FechaCreacion = DateTime.UtcNow,
+            FechaModificacion = DateTime.UtcNow,
+            UsuarioId = otroUsuarioId,
+            Usuario = otroUsuario
+        };
+
+        context.Usuarios.Add(otroUsuario);
+        context.Notas.Add(notaDeOtroUsuario);
+        await context.SaveChangesAsync();
+
+        mockFileProcessingService.Setup(x => x.ValidateFileAsync(It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync(true);
+
+        var handler = new UploadArchivoCommandHandler(context, mockFileProcessingService.Object);
+        var command = new UploadArchivoCommand
+        {
+            NotaId = notaId,
+            UsuarioId = usuarioId, // Different user trying to upload
+            FileData = new byte[] { 1, 2, 3, 4, 5 },
+            FileName = "test.jpg",
+            ContentType = "image/jpeg",
+        };
+
+        // Act & Assert
+        await FluentActions.Invoking(() => handler.Handle(command, CancellationToken.None))
+            .Should().ThrowAsync<UnauthorizedAccessException>();
+    }
 }
